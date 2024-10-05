@@ -21,3 +21,9 @@ The scripts may not function properly on operating systems besides Linux. For Wi
 
 ## Updates
 As several crucial libraries have been updated by accommodating our suggestions, we have accordingly revised our script to align with these updates.
+
+## Acknowledgement
+This repository is part of the following work:  
+Jinseo Lee, David Mohaisen, and Min Suk Kang. 2024. **Measuring DNS-over-HTTPS Downgrades: Prevalence, Techniques, and Bypass Strategies**. *Proc. ACM Netw.* 2, CoNEXT4, Article 28 (December 2024), 22 pages. https://doi.org/10.1145/3696385
+
+Please cite this work if you use our scripts.
