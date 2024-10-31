@@ -82,9 +82,9 @@ def firefox_tot_exp(num, country, API_KEY, TIMEOUT, main_logger, resolver, resol
             if resilient_resolver != None:
                 os.mkdir(f"{EXP_NAME}/{country}/{ip}/sr")
             os.mkdir(f"{EXP_NAME}/{country}/{ip}/sni")
-            os.mkdir(f"{EXP_NAME}/{country}/{ip}/rrsr")
             if resilient_resolver != None:
-                os.mkdir(f"{EXP_NAME}/{country}/{ip}/rrsni")
+                os.mkdir(f"{EXP_NAME}/{country}/{ip}/rrsr")
+            os.mkdir(f"{EXP_NAME}/{country}/{ip}/rrsni")
 
         except:
             # Due to the concurrency, it might raise exceptions

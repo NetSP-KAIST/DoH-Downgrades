@@ -14,7 +14,7 @@ For bypass measurements mimicking Chromium-like browsers, the user should run `c
 
 To conduct similar measurements mimicking Firefox browsers, the user should run `firefox_baseline.py` and `firefox_bypass.py`.
 
-For baseline measurements, each IP address directory will contain six items: `0`, `1`, `2`, `3`, `4`, and `Isp_{nameofISP}`. For bypass measurements, each IP address directory will contain one item and three or six subdirectories: `bl`, `rr`, `sni`, [`rrsni`, `rrsr`, `sr`,] and `Isp_{nameofISP}`. Each subdirectory will include five items: `0`, `1`, `2`, `3`, and `4`. Since all results (i.e., `0` to `4`) are raw DoH responses, users can easily validate each query result. For example, in Python, a user can extract a return code of a response as follows:
+For baseline measurements, each IP address directory will contain six items: `0`, `1`, `2`, `3`, `4`, and `Isp_{nameofISP}`. For bypass measurements, each IP address directory will contain one item and four or six subdirectories: `bl`, `rr`, `rrsni`, `sni`, [`rrsr`, `sr`,] and `Isp_{nameofISP}`. Each subdirectory will include five items: `0`, `1`, `2`, `3`, and `4`. Since all results (i.e., `0` to `4`) are raw DoH responses, users can easily validate each query result. For example, in Python, a user can extract a return code of a response as follows:
 ```
 with open("0", "rb") as response:
     resp = response.read()
