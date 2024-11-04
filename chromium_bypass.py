@@ -18,7 +18,7 @@ API_KEY = "YOUR_KEY_HERE"
 assert(USERNAME != "YOUR_NAME_HERE" and API_KEY != "YOUR_KEY_HERE")
 
 
-Y = "YOUR_Y_HERE" # The probability of random connectivity checks between queries
+Y = "YOUR_Y_HERE" # The probability of random connectivity checks between queries (0-100)
 assert(Y != "YOUR_Y_HERE")
 
 
@@ -77,20 +77,20 @@ def chromium_tot_exp(num, country, API_KEY, TIMEOUT, main_logger, resolver, reso
         # For recording, make directories
         try: 
             os.mkdir(f"{EXP_NAME}/{country}/{ip}")
-            os.mkdir(f"{EXP_NAME}/{country}/{ip}/bl")
-            os.mkdir(f"{EXP_NAME}/{country}/{ip}/rr")
+            os.mkdir(f"{EXP_NAME}/{country}/{ip}/baseline")
+            os.mkdir(f"{EXP_NAME}/{country}/{ip}/directIP")
             if resilient_resolver != None:
-                os.mkdir(f"{EXP_NAME}/{country}/{ip}/sr")
-            os.mkdir(f"{EXP_NAME}/{country}/{ip}/sni")
+                os.mkdir(f"{EXP_NAME}/{country}/{ip}/fuzzyIP")
+            os.mkdir(f"{EXP_NAME}/{country}/{ip}/fuzzyHost")
+            os.mkdir(f"{EXP_NAME}/{country}/{ip}/directIPfuzzyHost")
             if resilient_resolver != None:
-                os.mkdir(f"{EXP_NAME}/{country}/{ip}/rrsr")
-            os.mkdir(f"{EXP_NAME}/{country}/{ip}/rrsni")
+                os.mkdir(f"{EXP_NAME}/{country}/{ip}/fuzzyIPfuzzyHost")
 
         except:
             # Due to the concurrency, it might raise exceptions
             return f"Duplicated IP, {ip}"
         
-        # BASELINE
+        # Baseline
         trial = 0
         for domain in domains:
             if random.randint(1, 100) <= Y:
@@ -102,7 +102,7 @@ def chromium_tot_exp(num, country, API_KEY, TIMEOUT, main_logger, resolver, reso
 
             response = browsers.chromium_query(client, resolver, domain, main_logger, method)
 
-            with open(f"./{EXP_NAME}/{country}/{ip}/bl/{trial}", 'wb') as output_file:
+            with open(f"./{EXP_NAME}/{country}/{ip}/baseline/{trial}", 'wb') as output_file:
                 output_file.write(response)
             
             trial += 1
@@ -119,12 +119,12 @@ def chromium_tot_exp(num, country, API_KEY, TIMEOUT, main_logger, resolver, reso
 
             response = browsers.chromium_query(client, resolver, domain, main_logger, method, resolver_ip, None, None, None)
 
-            with open(f"./{EXP_NAME}/{country}/{ip}/rr/{trial}", 'wb') as output_file:
+            with open(f"./{EXP_NAME}/{country}/{ip}/directIP/{trial}", 'wb') as output_file:
                 output_file.write(response)
             
             trial += 1
         
-        # resilient IP resolution
+        # Fuzzy IP resolution
         trial = 0
         for domain in domains:
             if resilient_resolver == None:
@@ -139,12 +139,12 @@ def chromium_tot_exp(num, country, API_KEY, TIMEOUT, main_logger, resolver, reso
 
             response = browsers.chromium_query(client, resolver, domain, main_logger, method, None, resilient_resolver, None, None)
 
-            with open(f"./{EXP_NAME}/{country}/{ip}/sr/{trial}", 'wb') as output_file:
+            with open(f"./{EXP_NAME}/{country}/{ip}/fuzzyIP/{trial}", 'wb') as output_file:
                 output_file.write(response)
             
             trial += 1
 
-        # resilient hostname resolution
+        # Fuzzy hostname resolution
         trial = 0
         for domain in domains:
             if random.randint(1, 100) <= Y:
@@ -156,12 +156,12 @@ def chromium_tot_exp(num, country, API_KEY, TIMEOUT, main_logger, resolver, reso
 
             response = browsers.chromium_query(client, resolver, domain, main_logger, method, None, None, None, nysni)
             
-            with open(f"./{EXP_NAME}/{country}/{ip}/sni/{trial}", 'wb') as output_file:
+            with open(f"./{EXP_NAME}/{country}/{ip}/fuzzyHost/{trial}", 'wb') as output_file:
                 output_file.write(response)
             
             trial += 1
 
-        # Direct IP + resilient IP resolution
+        # Fuzzy IP + fuzzy hostname resolution
         trial = 0
         for domain in domains:
             if resilient_resolver == None:
@@ -174,14 +174,14 @@ def chromium_tot_exp(num, country, API_KEY, TIMEOUT, main_logger, resolver, reso
                     shutil.rmtree(f"./{EXP_NAME}/{country}/{ip}")
                     return "Not valid"
 
-            response = browsers.chromium_query(client, resolver, domain, main_logger, method, None, resilient_resolver, resilient_resolver_ip, None)
+            response = browsers.chromium_query(client, resolver, domain, main_logger, method, None, resilient_resolver, resilient_resolver_ip, nysni)
 
-            with open(f"./{EXP_NAME}/{country}/{ip}/rrsr/{trial}", 'wb') as output_file:
+            with open(f"./{EXP_NAME}/{country}/{ip}/fuzzyIPfuzzyHost/{trial}", 'wb') as output_file:
                 output_file.write(response)
             
             trial += 1
         
-        # Direct IP + resilient hostname resolution
+        # Direct IP + fuzzy hostname resolution
         trial = 0
         for domain in domains:
             if random.randint(1, 100) <= Y:
@@ -193,7 +193,7 @@ def chromium_tot_exp(num, country, API_KEY, TIMEOUT, main_logger, resolver, reso
 
             response = browsers.chromium_query(client, resolver, domain, main_logger, method, resolver_ip, None, None, nysni)
 
-            with open(f"./{EXP_NAME}/{country}/{ip}/rrsni/{trial}", 'wb') as output_file:
+            with open(f"./{EXP_NAME}/{country}/{ip}/directIPfuzzyHost/{trial}", 'wb') as output_file:
                 output_file.write(response)
             
             trial += 1

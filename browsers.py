@@ -15,7 +15,7 @@ class Methods(Enum):
     GET = 1
 
 
-X = "YOUR_X_HERE" # The probability of using GET method for connectivity checks
+X = "YOUR_X_HERE" # The probability of using GET method for connectivity checks (0-100)
 assert(X != "YOUR_X_HERE")
 
 
@@ -144,8 +144,8 @@ def firefox_query(
     """
 
     ### modes:
-    ### 0 - Baseline, 1 - Direct IP, 2 - resilient IP resolution, 3 - resilient hostname resolution, 
-    ### 4 - Direct IP + resilient IP resolution, 5 - Direct IP + resilient hostname resolution
+    ### 0 - Baseline, 1 - Direct IP, 2 - Fuzzy IP, 3 - Fuzzy hostname, 
+    ### 4 - Fuzzy IP + fuzzy hostname, 5 - Direct IP + fuzzy hostname
 
     if resolver_ip == None and (resilient_resolver == None and resilient_resolver_ip == None) and nysni == None:
         mode = 0
@@ -155,7 +155,7 @@ def firefox_query(
         mode = 2
     elif resolver_ip == None and (resilient_resolver == None and resilient_resolver_ip == None) and nysni != None:
         mode = 3
-    elif resolver_ip == None and (resilient_resolver != None and resilient_resolver_ip != None) and nysni == None:
+    elif resolver_ip == None and (resilient_resolver != None and resilient_resolver_ip != None) and nysni != None:
         mode = 4
     elif resolver_ip != None and (resilient_resolver == None and resilient_resolver_ip == None) and nysni != None:
         mode = 5
@@ -259,7 +259,7 @@ def firefox_query(
                         'user-agent': 'Chrome',
                         'accept-encoding': 'identity'
                     },
-                    extensions={"sni_hostname": resolver}
+                    extensions={"sni_hostname": nysni}
                 ).read()
             
             else: # elif mode == 5:
@@ -381,7 +381,7 @@ def firefox_query(
                         'user-agent': 'Chrome',
                         'accept-encoding': 'identity'
                     },
-                    extensions={"sni_hostname": resolver}
+                    extensions={"sni_hostname": nysni}
                 ).read()
 
             else: # elif mode == 5:
@@ -451,8 +451,8 @@ def chromium_query(
     """
 
     ### modes:
-    ### 0 - Baseline, 1 - Direct IP, 2 - resilient IP resolution, 3 - resilient hostname resolution, 
-    ### 4 - Direct IP + resilient IP resolution, 5 - Direct IP + resilient hostname resolution
+    ### 0 - Baseline, 1 - Direct IP, 2 - Fuzzy IP, 3 - Fuzzy hostname, 
+    ### 4 - Fuzzy IP + fuzzy hostname, 5 - Direct IP + fuzzy hostname
     if resolver_ip == None and (resilient_resolver == None and resilient_resolver_ip == None) and nysni == None:
         mode = 0
     elif resolver_ip != None and (resilient_resolver == None and resilient_resolver_ip == None) and nysni == None:
@@ -461,7 +461,7 @@ def chromium_query(
         mode = 2
     elif resolver_ip == None and (resilient_resolver == None and resilient_resolver_ip == None) and nysni != None:
         mode = 3
-    elif resolver_ip == None and (resilient_resolver != None and resilient_resolver_ip != None) and nysni == None:
+    elif resolver_ip == None and (resilient_resolver != None and resilient_resolver_ip != None) and nysni != None:
         mode = 4
     elif resolver_ip != None and (resilient_resolver == None and resilient_resolver_ip == None) and nysni != None:
         mode = 5
@@ -559,7 +559,7 @@ def chromium_query(
                         'user-agent': 'Chrome',
                         'accept-encoding': 'identity'
                     },
-                    extensions={"sni_hostname": resolver}
+                    extensions={"sni_hostname": nysni}
                 ).read()
             
             else: # elif mode == 5:
@@ -681,7 +681,7 @@ def chromium_query(
                         'user-agent': 'Chrome',
                         'accept-encoding': 'identity'
                     },
-                    extensions={"sni_hostname": resolver}
+                    extensions={"sni_hostname": nysni}
                 ).read()
 
             else: # elif mode == 5:

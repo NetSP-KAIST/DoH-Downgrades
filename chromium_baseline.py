@@ -18,7 +18,7 @@ API_KEY = "YOUR_KEY_HERE"
 assert(USERNAME != "YOUR_NAME_HERE" and API_KEY != "YOUR_KEY_HERE")
 
 
-Y = "YOUR_Y_HERE" # The probability of random connectivity checks between queries
+Y = "YOUR_Y_HERE" # The probability of random connectivity checks between queries (0-100)
 assert(Y != "YOUR_Y_HERE")
 
 

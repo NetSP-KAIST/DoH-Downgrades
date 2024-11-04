@@ -5,7 +5,7 @@ This repository serves as a platform for sharing source code related to the inve
 The data collection scripts are measuring DoH downgrades from globally distributed vantage points in Proxyrack. It requires a Linux-based operating systems, an API key for Proxyrack, and a stable Internet connection. Users can obtain raw measurement data (i.e., DoH query results) by running the provided scripts.
 
 ## Installation
-Install `Python 3.10.6` and the required Python packages listed in `requirements.txt`. Replace `YOUR_X_HERE` in `browsers.py` and `YOUR_Y_HERE` in the measurement scripts with appropriate values. Update `YOUR_NAME_HERE` and `YOUR_KEY_HERE` in the measurement scripts with your Proxyrack username and API key (for "Premium Residential Proxies"). Define the domain lists for your measurements in `domain_list.py`.
+Install `Python 3.10.6` and the required Python packages listed in `requirements.txt`. Replace `YOUR_X_HERE` in `browsers.py` and `YOUR_Y_HERE` in the measurement scripts with appropriate values. Update `YOUR_NAME_HERE` and `YOUR_KEY_HERE` in the measurement scripts with your Proxyrack username and API key (for "Premium Residential Proxies"). Update `COUNTRY_LIST` in the bypass scripts with the list of countries where bypass measurements should be performed. Define the domain lists for your measurements in `domain_list.py`. 
 
 ## Evaluation and Expected Results
 To perform baseline measurements (i.e., without bypassing downgrades) mimicking Chromium-like browsers, the user should run `chromium_baseline.py` with four additional arguments: a measurement index (an arbitrary string), DoH resolver domain name, domain list ID (as defined in `domain_list.py`), and the HTTP method (`POST` or `GET`). The results will be saved in a directory named after the provided measurement index, with country codes and IP addresses as subdirectory names.
@@ -14,7 +14,7 @@ For bypass measurements mimicking Chromium-like browsers, the user should run `c
 
 To conduct similar measurements mimicking Firefox browsers, the user should run `firefox_baseline.py` and `firefox_bypass.py`.
 
-For baseline measurements, each IP address directory will contain six items: `0`, `1`, `2`, `3`, `4`, and `Isp_{nameofISP}`. For bypass measurements, each IP address directory will contain one item and four or six subdirectories: `bl`, `rr`, `rrsni`, `sni`, [`rrsr`, `sr`,] and `Isp_{nameofISP}`. Each subdirectory will include five items: `0`, `1`, `2`, `3`, and `4`. Since all results (i.e., `0` to `4`) are raw DoH responses, users can easily validate each query result. For example, in Python, a user can extract a return code of a response as follows:
+For baseline measurements, each IP address directory will contain six items: `0`, `1`, `2`, `3`, `4`, and `Isp_{nameofISP}`. For bypass measurements, each IP address directory will contain one item and four or six subdirectories: `baseline`, `directIP`, `directIPfuzzyHost`, `fuzzyHost`, [`fuzzyIP`, `fuzzyIPfuzzyHost`,] and `Isp_{nameofISP}`. Each subdirectory will include five items: `0`, `1`, `2`, `3`, and `4`. Since all results (i.e., `0` to `4`) are raw DoH responses, users can easily validate each query result. For example, in Python, a user can extract a return code of a response as follows:
 ```
 with open("0", "rb") as response:
     resp = response.read()
